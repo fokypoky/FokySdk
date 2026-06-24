@@ -1,0 +1,9 @@
+.idea/*
+.vscode/*
+.vs/*
+
+*/bin/*
+*/obj/*
+*/*.csproj.user
+
+.DS_STORE
