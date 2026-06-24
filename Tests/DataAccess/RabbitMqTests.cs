@@ -25,7 +25,7 @@ namespace Tests.DataAccess
             ];
 
             // Act
-            _serviceCollection.AddRabbitMq(new RabbitMqSettings("host", "user", "password"), types);
+            _serviceCollection.AddRabbitMq(new RabbitMqSettings("host", "user", "password"), []);
 
             // Assert
         }
