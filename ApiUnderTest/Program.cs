@@ -18,7 +18,6 @@ builder.Services.AddRabbitMq(RabbitMqSettings.GetFromEnvironment(),
 {
     RabbitMq.AddConsumer<UserCreatedConsumer>(factory, context, new RabbitMqConsumer()
     {
-        ConsumerType = typeof(UserCreatedConsumer),
         Exchange = "users",
         ExchangeType = ExchangeType.Topic,
         Queue = "user.created.lobby_service",
