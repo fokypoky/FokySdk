@@ -7,20 +7,10 @@ namespace FokySdk.DataAccess
 {
     public static class RabbitMq
     {
-        public static IServiceCollection AddRabbitMq(this IServiceCollection services, RabbitMqSettings settings, ICollection<RabbitMqConsumer> consumers, Action<IRabbitMqBusFactoryConfigurator> publisherRegister)
+        public static IServiceCollection AddRabbitMq(this IServiceCollection services, RabbitMqSettings settings, Action<IRabbitMqBusFactoryConfigurator, IBusRegistrationContext> consumerRegister, Action<IRabbitMqBusFactoryConfigurator> publisherRegister)
         {
             services.AddMassTransit(options =>
             {
-                foreach (var consumer in consumers)
-                {
-                    if (!typeof(IConsumer).IsAssignableFrom(consumer.ConsumerType))
-                    {
-                        throw new ArgumentException();
-                    }
-
-                    options.AddConsumer(consumer.ConsumerType);
-                }
-
                 options.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host(settings.Host, settings.Port, settings.Vhost, c =>
@@ -29,11 +19,7 @@ namespace FokySdk.DataAccess
                         c.Password(settings.Password);
                     });
 
-                    foreach (var consumer in consumers)
-                    {
-                        AddConsumer(cfg, context, consumer);
-                    }
-
+                    consumerRegister.Invoke(cfg, context);
                     publisherRegister.Invoke(cfg);
                 });
             });
@@ -41,7 +27,7 @@ namespace FokySdk.DataAccess
             return services;
         }
 
-        public static void AddConsumer(IRabbitMqBusFactoryConfigurator factoryConfigurator, IBusRegistrationContext busContext, RabbitMqConsumer consumer)
+        public static void AddConsumer<T>(IRabbitMqBusFactoryConfigurator factoryConfigurator, IBusRegistrationContext busContext, RabbitMqConsumer consumer) where T : class, IConsumer
         {
             factoryConfigurator.ReceiveEndpoint(consumer.Queue, endpoint =>
             {
@@ -52,7 +38,7 @@ namespace FokySdk.DataAccess
                     x.RoutingKey = consumer.RoutingKey;
                 });
 
-                endpoint.ConfigureConsumer(busContext, consumer.ConsumerType);
+                endpoint.ConfigureConsumer<T>(busContext);
             });
         }
 
