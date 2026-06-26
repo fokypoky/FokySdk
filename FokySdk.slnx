@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="ApiUnderTest/ApiUnderTest.csproj" Id="7656019a-8694-4f2b-83fe-42bc91979c26" />
   <Project Path="FokySdk/FokySdk.csproj" />
   <Project Path="Tests/Tests.csproj" Id="6ec99219-2c00-4957-b16c-f035cb2d37a8" />
 </Solution>

@@ -7,10 +7,15 @@ namespace FokySdk.DataAccess
 {
     public static class RabbitMq
     {
-        public static IServiceCollection AddRabbitMq(this IServiceCollection services, RabbitMqSettings settings, Action<IRabbitMqBusFactoryConfigurator, IBusRegistrationContext>? consumerRegister, Action<IRabbitMqBusFactoryConfigurator>? publisherRegister)
+        public static IServiceCollection AddRabbitMq(this IServiceCollection services,
+            RabbitMqSettings settings,
+            Action<IBusRegistrationConfigurator>? consumersRegister,
+            Action<IRabbitMqBusFactoryConfigurator, IBusRegistrationContext>? consumersAdd,
+            Action<IRabbitMqBusFactoryConfigurator>? publishersRegister)
         {
             services.AddMassTransit(options =>
             {
+                consumersRegister?.Invoke(options);
                 options.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host(settings.Host, settings.Port, settings.Vhost, c =>
@@ -19,8 +24,8 @@ namespace FokySdk.DataAccess
                         c.Password(settings.Password);
                     });
 
-                    consumerRegister?.Invoke(cfg, context);
-                    publisherRegister?.Invoke(cfg);
+                    consumersAdd?.Invoke(cfg, context);
+                    publishersRegister?.Invoke(cfg);
                 });
             });
 
@@ -34,7 +39,7 @@ namespace FokySdk.DataAccess
                 endpoint.ConfigureConsumeTopology = false;
                 endpoint.Bind(consumer.Exchange, x =>
                 {
-                    x.ExchangeType = Enum.GetName(typeof(ExchangeType), consumer.ConsumerType);
+                    x.ExchangeType = Enum.GetName(typeof(ExchangeType), consumer.ExchangeType)?.ToLower() ?? throw new ArgumentException($"Unknown exchange type. Value: {consumer.ExchangeType}");
                     x.RoutingKey = consumer.RoutingKey;
                 });
 

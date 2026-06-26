@@ -1,0 +1,33 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5116",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7156;http://localhost:5116",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PG_HOST": "localhost",
+        "PG_PORT": "4937",
+        "PG_DATABASE": "MeepleHub.Lobby",
+        "PG_USER": "postgres",
+        "PG_PASSWORD": "dRv7lUN7M1pCG6rtyG",
+        "RABBIT_MQ_HOST": "localhost",
+        "RABBIT_MQ_PORT": "3217",
+        "RABBIT_MQ_USER": "admin",
+        "RABBIT_MQ_PASSWORD": "admin",
+        "RABBIT_MQ_VHOST": "/"
+      }
+    }
+  }
+}
