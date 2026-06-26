@@ -18,8 +18,6 @@ namespace FokySdk.Swagger
         /// <returns>The updated service collection.</returns>
         public static IServiceCollection AddSwagger(this IServiceCollection services, SwaggerSettings settings)
         {
-            services.AddOpenApi();
-
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc(settings.ServiceVersion, new OpenApiInfo { Title = settings.ServiceName, Version = settings.ServiceVersion });
@@ -37,7 +35,6 @@ namespace FokySdk.Swagger
         {
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.MapOpenApi();
             return app;
         }
     }
