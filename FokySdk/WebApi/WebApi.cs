@@ -10,6 +10,7 @@ namespace FokySdk.WebApi
             {
                 options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                options.SerializerSettings.DateFormatString = "yyyy-MM-ddTHH:mm:ssZ";
             });
             
             return services;
