@@ -31,10 +31,16 @@ namespace FokySdk.Swagger
         /// </summary>
         /// <param name="app">The <see cref="WebApplication"/> instance to configure.</param>
         /// <returns>The modified <see cref="WebApplication"/>.</returns>
-        public static WebApplication AddSwagger(this WebApplication app)
+        public static WebApplication AddSwagger(this WebApplication app, SwaggerSettings? settings = null)
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
+            {
+                if (settings != null)
+                {
+                    c.SwaggerEndpoint($"/swagger/{settings.ServiceVersion}/swagger.json", $"{settings.ServiceName} {settings.ServiceVersion}");
+                }
+            });
             return app;
         }
     }
