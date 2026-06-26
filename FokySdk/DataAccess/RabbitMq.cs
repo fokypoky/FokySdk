@@ -7,7 +7,7 @@ namespace FokySdk.DataAccess
 {
     public static class RabbitMq
     {
-        public static IServiceCollection AddRabbitMq(this IServiceCollection services, RabbitMqSettings settings, Action<IRabbitMqBusFactoryConfigurator, IBusRegistrationContext> consumerRegister, Action<IRabbitMqBusFactoryConfigurator> publisherRegister)
+        public static IServiceCollection AddRabbitMq(this IServiceCollection services, RabbitMqSettings settings, Action<IRabbitMqBusFactoryConfigurator, IBusRegistrationContext>? consumerRegister, Action<IRabbitMqBusFactoryConfigurator>? publisherRegister)
         {
             services.AddMassTransit(options =>
             {
@@ -19,8 +19,8 @@ namespace FokySdk.DataAccess
                         c.Password(settings.Password);
                     });
 
-                    consumerRegister.Invoke(cfg, context);
-                    publisherRegister.Invoke(cfg);
+                    consumerRegister?.Invoke(cfg, context);
+                    publisherRegister?.Invoke(cfg);
                 });
             });
 
@@ -51,7 +51,7 @@ namespace FokySdk.DataAccess
             factoryConfigurator.Publish<T>(x =>
             {
                 x.Durable = publisher.Durable;
-                x.ExchangeType = Enum.GetName(typeof(ExchangeType), publisher.ExchangeType);
+                x.ExchangeType = Enum.GetName(typeof(ExchangeType), publisher.ExchangeType)?.ToLower() ?? throw new ArgumentException($"Unknown exchange type. Value: {publisher.ExchangeType}");
             });
         }
     }
