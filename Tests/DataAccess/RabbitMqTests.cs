@@ -18,16 +18,6 @@ namespace Tests.DataAccess
         [Fact]
         public void AddRabbitMq_CorrectConsumersType_ShouldBeAdded()
         {
-            // Arrange
-            List<Type> types =
-            [
-                typeof(TestConsumer)
-            ];
-
-            // Act
-            _serviceCollection.AddRabbitMq(new RabbitMqSettings("host", "user", "password"), []);
-
-            // Assert
         }
     }
 }

@@ -7,7 +7,7 @@ namespace FokySdk.DataAccess
 {
     public static class RabbitMq
     {
-        public static IServiceCollection AddRabbitMq(this IServiceCollection services, RabbitMqSettings settings, ICollection<RabbitMqConsumer> consumers)
+        public static IServiceCollection AddRabbitMq(this IServiceCollection services, RabbitMqSettings settings, ICollection<RabbitMqConsumer> consumers, Action<IRabbitMqBusFactoryConfigurator> publisherRegister)
         {
             services.AddMassTransit(options =>
             {
@@ -33,6 +33,8 @@ namespace FokySdk.DataAccess
                     {
                         AddConsumer(cfg, context, consumer);
                     }
+
+                    publisherRegister.Invoke(cfg);
                 });
             });
 
@@ -51,6 +53,19 @@ namespace FokySdk.DataAccess
                 });
 
                 endpoint.ConfigureConsumer(busContext, consumer.ConsumerType);
+            });
+        }
+
+        public static void AddPublisher<T>(IRabbitMqBusFactoryConfigurator factoryConfigurator, RabbitMqPublisher publisher) where T : class
+        {
+            factoryConfigurator.Message<T>(x =>
+            {
+                x.SetEntityName(publisher.Exchange);
+            });
+            factoryConfigurator.Publish<T>(x =>
+            {
+                x.Durable = publisher.Durable;
+                x.ExchangeType = Enum.GetName(typeof(ExchangeType), publisher.ExchangeType);
             });
         }
     }
