@@ -19,7 +19,7 @@ namespace FokySdk.Controller
         /// <param name="response"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public static IActionResult MapResponse<T>(this ControllerBase controller, ServiceResult<T> response)
+        public static ActionResult MapResponse<T>(this ControllerBase controller, ServiceResult<T> response)
         {
             return response.Result switch
             {
