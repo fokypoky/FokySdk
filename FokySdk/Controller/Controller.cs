@@ -8,7 +8,12 @@ namespace FokySdk.Controller
     {
         private static ServiceError MapError<T>(ServiceResult<T> response)
         {
-            return new ServiceError() { Reason = response.Error ?? "Error text is empty" };
+            return new ServiceError()
+            {
+                Code = response.Code,
+                Reason = response.Error ?? "Error text is empty",
+                Parameters = response.Parameters
+            };
         }
 
         /// <summary>
