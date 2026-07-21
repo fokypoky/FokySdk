@@ -13,5 +13,7 @@ namespace FokySdk.Types.Settings
         public string FileTargetName { get; set; } = "file";
         public LogLevel MinLevel { get; set; } = LogLevel.Info;
         public LogLevel MaxLevel { get; set; } = LogLevel.Fatal;
+
+        public ICollection<string> ExcludedStrings { get; set; }
     }
 }
