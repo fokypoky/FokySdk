@@ -1,12 +1,14 @@
 ﻿using System.Net;
 using FokySdk.Types.Common;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace FokySdk.Middlewares
 {
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
+        public static string? InternalExceptionCode { get; set; } = null;
 
         public ExceptionHandlingMiddleware(RequestDelegate next)
         {
@@ -21,19 +23,23 @@ namespace FokySdk.Middlewares
             }
             catch (Exception ex)
             {
-                await HandleException(context);
+                await HandleException(ex, context);
             }
         }
 
-        private async Task HandleException(HttpContext context)
+        private async Task HandleException(Exception exception, HttpContext context)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            await context.Response.WriteAsJsonAsync(new ServiceError()
+            var error = new ServiceError()
             {
-                Reason = "Internal server error"
-            });
+                Code = InternalExceptionCode,
+                Reason = $"Internal server error. {exception.Message}"
+            };
+            var serialized = JsonConvert.SerializeObject(error, Formatting.Indented, Constants.Constants.SerializerSettings);
+
+            await context.Response.WriteAsync(serialized);
         }
     }
 }

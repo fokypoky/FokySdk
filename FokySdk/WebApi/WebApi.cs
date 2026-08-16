@@ -8,9 +8,9 @@ namespace FokySdk.WebApi
         {
             services.AddControllers().AddNewtonsoftJson(options =>
             {
-                options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
-                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-                options.SerializerSettings.DateFormatString = "yyyy-MM-ddTHH:mm:ssZ";
+                options.SerializerSettings.Formatting = Constants.Constants.SerializerSettings.Formatting;
+                options.SerializerSettings.NullValueHandling = Constants.Constants.SerializerSettings.NullValueHandling;
+                options.SerializerSettings.DateFormatString = Constants.Constants.SerializerSettings.DateFormatString;
             });
             
             return services;
