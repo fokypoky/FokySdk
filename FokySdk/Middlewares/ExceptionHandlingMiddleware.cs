@@ -21,6 +21,10 @@ namespace FokySdk.Middlewares
             {
                 await _next.Invoke(context);
             }
+            catch (ApiException<ServiceError> ex)
+            {
+                await HandleException(ex, context);
+            }
             catch (Exception ex)
             {
                 await HandleException(ex, context);
@@ -38,6 +42,16 @@ namespace FokySdk.Middlewares
                 Reason = $"Internal server error. {exception.Message}"
             };
             var serialized = JsonConvert.SerializeObject(error, Formatting.Indented, Constants.Constants.SerializerSettings);
+
+            await context.Response.WriteAsync(serialized);
+        }
+
+        private async Task HandleException(ApiException<ServiceError> exception, HttpContext context)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = exception.StatusCode;
+
+            var serialized = JsonConvert.SerializeObject(exception.Result, Formatting.Indented, Constants.Constants.SerializerSettings);
 
             await context.Response.WriteAsync(serialized);
         }
