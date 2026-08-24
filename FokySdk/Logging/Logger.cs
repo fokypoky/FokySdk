@@ -56,6 +56,11 @@ namespace FokySdk.Logging
 
         private string PrepareMessage(string message)
         {
+            if (_excludedStrings.Count == 0)
+            {
+                return message;
+            }
+
             var result = new StringBuilder(message);
 
             foreach (var excludedString in _excludedStrings)
