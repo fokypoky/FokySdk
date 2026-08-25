@@ -48,11 +48,11 @@ namespace FokySdk.Controller
         /// <param name="response"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public static ActionResult MapResponse<T>(this ControllerBase controller, ServiceResult<PaginatedResponse<T>> response)
+        public static ActionResult MapResponse<T>(this ControllerBase controller, ServiceResult<PaginatedResponse<T>> response, HttpContext? context = null)
         {
             if (response.IsOk())
             {
-                controller.HttpContext.Response.Headers.TryAdd("x-total-count", response.Data!.TotalCount.ToString());
+                (context ?? controller.HttpContext).Response.Headers.TryAdd("x-total-count", response.Data!.TotalCount.ToString());
             }
 
             return response.Result switch
