@@ -22,5 +22,36 @@ namespace FokySdk.Types.Settings
         /// to distinguish between different versions of the service available in the Swagger documentation.
         /// </remarks>
         public string ServiceVersion { get; set; }
+
+        /// <summary>
+        /// Sets the version of service from env variable 'SERVICE_VERSION'. Sets 'DEV' value if 'SERVICE_VERSION' is null
+        /// </summary>
+        public void SetVersionFromEnvironment()
+        {
+            ServiceVersion = Environment.GetEnvironmentVariable("SERVICE_VERSION") ?? "DEV";
+        }
+
+        /// <summary>
+        /// Sets the version of service from env variable 'SERVICE_NAME'. Sets 'SERVICE' value if 'SERVICE_VERSION' is null
+        /// </summary>
+        public void SetNameFromEnvironment()
+        {
+            ServiceName = Environment.GetEnvironmentVariable("SERVICE_NAME") ?? "SERVICE";
+        }
+
+        /// <summary>
+        /// Get settings from environment variables 'SERVICE_NAME' and 'SERVICE_VERSION'. If environment variables are null then use default values:
+        /// 'SERVICE_NAME' = 'SERVICE'
+        /// 'SERVICE_VERSION' = 'DEV'
+        /// </summary>
+        /// <returns>SwaggerSettings</returns>
+        public static SwaggerSettings GetFromEnvironment()
+        {
+            var settings = new SwaggerSettings();
+            settings.SetNameFromEnvironment();
+            settings.SetVersionFromEnvironment();
+
+            return settings;
+        }
     }
 }
