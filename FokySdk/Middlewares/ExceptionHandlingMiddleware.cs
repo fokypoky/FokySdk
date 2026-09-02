@@ -25,6 +25,10 @@ namespace FokySdk.Middlewares
             {
                 await HandleException(ex, context);
             }
+            catch (ApiException ex)
+            {
+                await HandleException(ex, context);
+            }
             catch (Exception ex)
             {
                 await HandleException(ex, context);
@@ -54,6 +58,16 @@ namespace FokySdk.Middlewares
             var serialized = JsonConvert.SerializeObject(exception.Result, Formatting.Indented, Constants.Constants.SerializerSettings);
 
             await context.Response.WriteAsync(serialized);
+        }
+
+        private async Task HandleException(ApiException exception, HttpContext context)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = exception.StatusCode;
+            foreach (var key in exception.Headers.Keys)
+            {
+                context.Response.Headers.TryAdd(key, exception.Headers[key].First());
+            }
         }
     }
 }
