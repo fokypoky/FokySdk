@@ -34,6 +34,7 @@ namespace FokySdk.Controller
                 ResultStatus.NoContent => controller.NoContent(),
                 ResultStatus.PartialContent => controller.StatusCode((int)HttpStatusCode.PartialContent, response.Data),
                 ResultStatus.BadRequest => controller.BadRequest(MapError(response)),
+                ResultStatus.Unauthorized => controller.StatusCode((int)HttpStatusCode.Unauthorized, response.Data != null ? MapError(response) : null),
                 ResultStatus.NotFound => controller.NotFound(MapError(response)),
                 ResultStatus.InternalError => controller.StatusCode((int)HttpStatusCode.InternalServerError),
                 _ => throw new ArgumentException("Unknown result code")
@@ -62,6 +63,7 @@ namespace FokySdk.Controller
                 ResultStatus.NoContent => controller.NoContent(),
                 ResultStatus.PartialContent => controller.StatusCode((int)HttpStatusCode.PartialContent, response.Data?.Data),
                 ResultStatus.BadRequest => controller.BadRequest(MapError(response)),
+                ResultStatus.Unauthorized => controller.StatusCode((int)HttpStatusCode.Unauthorized, response.Data != null ? MapError(response) : null),
                 ResultStatus.NotFound => controller.NotFound(MapError(response)),
                 ResultStatus.InternalError => controller.StatusCode((int)HttpStatusCode.InternalServerError),
                 _ => throw new ArgumentException("Unknown result code")
