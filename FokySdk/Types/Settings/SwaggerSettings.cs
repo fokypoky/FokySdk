@@ -24,6 +24,11 @@ namespace FokySdk.Types.Settings
         public string ServiceVersion { get; set; }
 
         /// <summary>
+        /// Adds jwt auth to all endpoints
+        /// </summary>
+        public bool JwtAuthEnabled { get; set; }
+
+        /// <summary>
         /// Sets the version of service from env variable 'SERVICE_VERSION'. Sets 'DEV' value if 'SERVICE_VERSION' is null
         /// </summary>
         public void SetVersionFromEnvironment()
@@ -52,6 +57,16 @@ namespace FokySdk.Types.Settings
             settings.SetVersionFromEnvironment();
 
             return settings;
+        }
+
+        /// <summary>
+        /// Add jwt auth to all endpoints
+        /// </summary>
+        /// <returns></returns>
+        public SwaggerSettings WithJwtAuthEnabled()
+        {
+            JwtAuthEnabled = true;
+            return this;
         }
     }
 }

@@ -7,7 +7,7 @@
         
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageId>FokySdk</PackageId>
-        <Version>1.11.3</Version>
+        <Version>1.11.4</Version>
         <Authors>fokypoky</Authors>
         <Description>An infrastructure SDK for .NET microservices. Includes integrations with Swagger, OpenTelemetry, RabbitMQ, Entity Framework Core, and more</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -24,6 +24,7 @@
       <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.3.11" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.9" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
+      <PackageReference Include="Microsoft.OpenApi" Version="2.12.2" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
       <PackageReference Include="NLog" Version="6.1.4" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />

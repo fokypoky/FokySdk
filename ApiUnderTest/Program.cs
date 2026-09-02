@@ -11,7 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithNewtonsoft();
-builder.Services.AddSwagger(new SwaggerSettings() { ServiceName = "ApiUnderTest", ServiceVersion = "v1" });
+builder.Services.AddSwagger(new SwaggerSettings()
+    { ServiceName = "ApiUnderTest", ServiceVersion = "v1", JwtAuthEnabled = true });
 
 var app = builder.Build();
 

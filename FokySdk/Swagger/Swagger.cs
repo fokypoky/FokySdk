@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
 
+
 namespace FokySdk.Swagger
 {
     /// <summary>
@@ -21,6 +22,24 @@ namespace FokySdk.Swagger
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc(settings.ServiceVersion, new OpenApiInfo { Title = settings.ServiceName, Version = settings.ServiceVersion });
+
+                if (settings.JwtAuthEnabled)
+                {
+                    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                    {
+                        In = ParameterLocation.Header,
+                        Description = "JWT Bearer",
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "bearer",
+                        BearerFormat = "JWT"
+                    });
+
+                    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement()
+                    {
+                        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+                    });
+                }
             });
             
             return services;
