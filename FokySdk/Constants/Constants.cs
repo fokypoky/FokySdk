@@ -2,7 +2,7 @@
 
 namespace FokySdk.Constants
 {
-    internal static class Constants
+    public static class Constants
     {
         public static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
         {
